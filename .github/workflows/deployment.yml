@@ -10,21 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AKIAR32F6G4QNF3Q3RH2}}
-          aws-secret-access-key: ${{ wijx9muHl4cmxU7cqJOlRxIxFBRR1Ckyn9gNm }}
+          aws-access-key-id: ${{ secrets.AKIAR32F6G4QNF3Q3RH2 }}
+          aws-secret-access-key: ${{ secrets.wijx9muHl4cmxU7cqJOlRxIxFBRR1Ckyn9gNm }}
           aws-region: eu-west-2
 
       - name: Upload files to S3
-        run: aws s3 sync . s3://YOUR_BUCKET_NAME --delete
+        run: aws s3 sync . s3://amz-bucket-230603 --delete
 
-      - name: Invalidate CloudFront Cache
-        run: aws cloudfront create-invalidation \
-          --distribution-id E3592O0641TLX4  \
-          --paths "/*"
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id E3592O0641TLX4 --paths "/*"
