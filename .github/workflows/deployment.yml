@@ -1,4 +1,4 @@
-name: Deploy Portfolio Website
+name: Deploy Website to S3
 
 on:
   push:
@@ -10,18 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AKIAR32F6G4QDWR5ORGI }}
-          aws-secret-access-key: ${{ secrets.b/ttadzK6aj2F/4dwx9S6RPwSKmhjV+9RWrc092S }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
 
       - name: Upload files to S3
-        run: aws s3 sync . s3://amz-bucket-230603 --delete
+        run: |
+          aws s3 sync . s3://your-bucket-name --delete
 
       - name: Invalidate CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id E3592O0641TLX4 --paths "/*"
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id YOUR_DISTRIBUTION_ID \
+          --paths "/*"
